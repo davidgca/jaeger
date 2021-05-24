@@ -1,2 +1,2 @@
 # jaeger
-POC with ApI in python + mongo + nginx + jaeger
+POC with RESTFull in python + mongo + nginx + jaeger
