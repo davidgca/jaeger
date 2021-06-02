@@ -16,16 +16,17 @@ class StarDetailView(APIView):
         return Response(serializer.data)
 
     def delete(self, request, name):
-        stock = get_object_or_404(Star, name=name)
-        stock.delete()
+        #star = get_object_or_404(Star, pk=pk)
+        star = Star.objects.get(name=name)
+        star.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
 
-'''
+
     def put(self, request, pk):
-        stock = get_object_or_404(Stock, pk=pk)
-        serializer = StockSerializer(stock, data=request.data)
+        star = get_object_or_404(Star, pk=pk)
+        serializer = StarSerializer(star, data=request.data)
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-'''
+

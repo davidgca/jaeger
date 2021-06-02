@@ -14,5 +14,5 @@ schema_view = get_schema_view(title='Star Rest API', renderer_classes=[OpenAPIRe
 urlpatterns = [
     url(r'schema', schema_view),
     url(r'^stars/$', views.StarViewSet.as_view()),
-    url(r'^star/(?P<name>[a-z]+).*', views.StarDetailView.as_view()),
+    url(r'^star/(?P<name>[a-zA-Z]+)', views.StarDetailView.as_view()),
 ]
