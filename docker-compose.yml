@@ -14,6 +14,11 @@ services:
     container_name: memcached
     ports:
       - 11211:11211
+    entrypoint:
+      - memcached
+      - -m 64
+      - -vvv
+
   mongodb:
     image: mongo:4.4.4
     container_name: mongodb
@@ -31,3 +36,4 @@ services:
       - "8000:8000"
     depends_on:
       - mongodb
+      - memcached
