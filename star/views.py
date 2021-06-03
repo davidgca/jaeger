@@ -4,6 +4,7 @@ from rest_framework.views import APIView
 from star.models import Star
 from star.serializers import StarSerializer
 from rest_framework.response import Response
+
 class StarViewSet(generics.ListCreateAPIView):
     model = Star
     queryset = Star.objects.all()
@@ -20,7 +21,6 @@ class StarDetailView(APIView):
         star = Star.objects.get(name=name)
         star.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
-
 
     def put(self, request, pk):
         star = get_object_or_404(Star, pk=pk)

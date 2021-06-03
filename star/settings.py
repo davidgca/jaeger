@@ -3,7 +3,10 @@ Django settings for star project.
 """
 import os
 import memcache
+import opentracing
+import django_opentracing
 from pathlib import Path
+from jaeger_client import Config
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -34,7 +37,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'star',
     'rest_framework',
-    'rest_framework_swagger'
+    'rest_framework_swagger',
+    'django_opentracing'
 ]
 
 MIDDLEWARE = [
@@ -44,9 +48,13 @@ MIDDLEWARE = [
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
+
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'django.middleware.cache.UpdateCacheMiddleware',
     'django.middleware.cache.FetchFromCacheMiddleware',
+
+    #'django_jaeger_middleware.middleware.JaegerMiddleWare',
+    'django_opentracing.OpenTracingMiddleware',
 
 ]
 
@@ -149,3 +157,33 @@ CACHES = {
 CACHE_BACKEND = 'memcached://memcached:11211/'
 CACHE_MIDDLEWARE_ALIAS = "default"
 CACHE_MIDDLEWARE_SECONDS  = 10
+
+# OpenTracing settings
+
+# if not included, defaults to True.
+# has to come before OPENTRACING_TRACING setting because python...
+OPENTRACING_TRACE_ALL = True
+
+# Callable that returns an `opentracing.Tracer` implementation.
+#OPENTRACING_TRACER_CALLABLE = 'django_opentracing.DjangoTracing()'
+
+#OPENTRACING_TRACED_ATTRIBUTES = ['META']
+
+config = Config(
+    config={ # usually read from some yaml config
+        'sampler': {
+            'type': 'const',
+            'param': 1,
+        },
+        'local_agent': {
+            'reporting_host': 'jaeger',
+            'reporting_port': '5775',
+        },
+        'logging': True,
+    },
+    service_name='stars',
+    validate=True,
+)
+# this call also sets opentracing.tracer
+tracer = config.initialize_tracer()
+OPENTRACING_TRACING = django_opentracing.DjangoTracing(tracer)
