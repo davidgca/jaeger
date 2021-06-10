@@ -165,9 +165,9 @@ CACHE_MIDDLEWARE_SECONDS  = 10
 OPENTRACING_TRACE_ALL = True
 
 # Callable that returns an `opentracing.Tracer` implementation.
-#OPENTRACING_TRACER_CALLABLE = 'django_opentracing.DjangoTracing()'
+OPENTRACING_TRACER_CALLABLE = 'django_opentracing.DjangoTracing()'
 
-#OPENTRACING_TRACED_ATTRIBUTES = ['META']
+OPENTRACING_TRACED_ATTRIBUTES = ['META']
 
 config = Config(
     config={ # usually read from some yaml config

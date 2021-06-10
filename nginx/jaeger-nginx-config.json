@@ -10,7 +10,7 @@
   "headers": {
     "jaegerDebugHeader": "jaeger-debug-id",
     "jaegerBaggageHeader": "jaeger-baggage",
-    "traceBaggageHeaderPrefix": "uberctx-"
+    "traceBaggageHeaderPrefix": "stars-"
   },
   "baggage_restrictions": {
     "denyBaggageOnInitializationFailure": false,
